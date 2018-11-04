@@ -37,12 +37,12 @@ class Scene {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         
         this.programs.forEach(program => {
-            program.predraw(this.camera);
+            program.predraw(this.camera, time);
         });
 
         // Draw objects
         this.objects.forEach(object => {
-            object.draw(stack);
+            object.draw(stack, time);
         });
     }
 

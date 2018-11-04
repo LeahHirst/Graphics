@@ -21,10 +21,26 @@ function rad(deg) {
     return deg * Math.PI / 180;
 }
 
-function registerKeyboardEvent(keyCode, func) {
-    window.addEventListener('keydown', (e) => {
-        if (e.code == keyCode) func();
+let events = {};
+
+function updateEvents() {
+    Object.keys(events).forEach(key => {
+        if (events[key] != undefined) events[key]();
     });
 }
 
-export { initBuffer, rad, registerKeyboardEvent };
+function registerKeyboardEvent(keyCode, func) {
+    window.addEventListener('keydown', (e) => {
+        if (e.code == keyCode) events[keyCode] = func;
+    });
+
+    window.addEventListener('keyup', (e) => {
+        if (e.code == keyCode) {
+            if (Object.keys(events).indexOf(keyCode) != -1) {
+                events[keyCode] = undefined;
+            }
+        }
+    });
+}
+
+export { initBuffer, rad, updateEvents, registerKeyboardEvent };

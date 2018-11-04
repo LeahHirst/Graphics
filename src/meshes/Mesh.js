@@ -39,6 +39,7 @@ class Mesh {
     initBuffers() {
         this.vertexBuffer = initBuffer(this.gl, this.verts);
         this.normalsBuffer = initBuffer(this.gl, this.normals);
+        this.indicesBuffer = initBuffer(this.gl, this.indices);
         if (this.texcoords != undefined)
             this.texcoordsBuffer = initBuffer(this.gl, this.texcoords);
     }
@@ -67,6 +68,10 @@ class Mesh {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalsBuffer);
         this.gl.enableVertexAttribArray(this.program.attrib('aVertexNormal'));
         this.gl.vertexAttribPointer(this.program.attrib('aVertexNormal'), 3, this.gl.FLOAT, false, 0, 0);
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.indicesBuffer);
+        this.gl.enableVertexAttribArray(this.program.attrib('aVertexIndices'));
+        this.gl.vertexAttribPointer(this.program.attrib('aVertexIndices'), 2, this.gl.FLOAT, false, 0, 0);
 
         if (this.texcoords != undefined) {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texcoordsBuffer);
