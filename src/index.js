@@ -1,10 +1,11 @@
 import Scene from './Scene';
 import Boat from './meshes/Boat';
 import Lighthouse from './meshes/Lighthouse';
-import Program from './Program';
+import Program from './programs/Program';
+import WaterProgram from './programs/WaterProgram';
 import Ocean from './meshes/Ocean';
 import { vec3 } from 'gl-matrix';
-import { rad, registerKeyboardEvent } from './utils';
+import { rad, registerKeyboardEvent, updateEvents } from './utils';
 
 import fragmentShader from './shaders/shader.frag';
 import vertShader from './shaders/shader.vert';
@@ -27,24 +28,24 @@ function main() {
   let lighthouse = new Lighthouse(gl, program);
   let boat = new Boat(gl, program);
 
-  let waterProgram = new Program(gl, {
+  let waterProgram = new WaterProgram(gl, {
     fragment: waterFragShader,
     vertex: waterVertShader
   })
 
-  let ocean = new Ocean(gl, waterProgram, 25);
+  let ocean = new Ocean(gl, waterProgram, 250);
 
-  lighthouse.position = vec3.fromValues(0, 1, 0);
+  lighthouse.position = vec3.fromValues(0, 1.5, 0);
   lighthouse.addTo(scene);
 
-  boat.position = vec3.fromValues(10, 0, 0);
+  boat.position = vec3.fromValues(0, 0.3, 10);
   boat.addTo(scene);
 
   ocean.addTo(scene);
 
   scene.camera.follow(boat);
   let camR = 0;
-  let camH = 20;
+  let camH = 5;
   let camDist = 10;
 
   function updateCameraAngle(angle, dist, height) {
@@ -53,50 +54,42 @@ function main() {
     scene.camera.followDelta = vec3.fromValues(camX, height, camZ);
   }
   registerKeyboardEvent('ArrowLeft', () => {
-    camR -= rad(10);
+    camR -= rad(5);
     updateCameraAngle(camR, camDist, camH);
   });
   registerKeyboardEvent('ArrowRight', () => {
-    camR += rad(10);
+    camR += rad(5);
     updateCameraAngle(camR, camDist, camH);
   });
   registerKeyboardEvent('ArrowDown', () => {
-    camH -= 5;
-    camDist /= 2;
+    camH /= 1.05;
+    camDist /= 1.1;
     updateCameraAngle(camR, camDist, camH);
   });
   registerKeyboardEvent('ArrowUp', () => {
-    camH += 5;
-    camDist *= 2;
+    camH *= 1.05;
+    camDist *= 1.1;
     updateCameraAngle(camR, camDist, camH);
   });
 
   registerKeyboardEvent('KeyW', () => {
-    let dist = 0.008;
+    let dist = 0.002;
     let angle = boat.rotation[1];
     boat.velocity[0] -= dist * Math.sin(angle);
     boat.velocity[2] -= dist * Math.cos(angle);
   });
   registerKeyboardEvent('KeyA', () => {
-    boat.rotation[1] += rad(10);
+    boat.rotation[1] += rad(2);
   });
   registerKeyboardEvent('KeyD', () => {
-    boat.rotation[1] -= rad(10);
+    boat.rotation[1] -= rad(2);
   });
 
   function render(time) {
     time *= 0.001;
     scene.draw(time);
 
-
-    let mR = rad(10);
-    let x = ((time / 4) % 1) * 2 * Math.PI;
-    let rX = mR * Math.sin(x);
-    let rY = x;
-    let rZ = mR * Math.sin(x+1);
-
-    boat.rotation[0] = rX;
-    boat.rotation[2] = rZ;
+    updateEvents();
 
     boat.setAnimationFrame((time / 2) % 1);
 

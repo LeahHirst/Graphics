@@ -25,7 +25,7 @@ class Boat extends Mesh {
         this.friction = 0.95;
     }
 
-    draw(stack, time) {
+    draw(stack, time = 0) {
         let position = vec3.create();
         vec3.add(position, this.position, this.velocity);
         this.position = position;
@@ -34,6 +34,23 @@ class Boat extends Mesh {
         let velocity = vec3.create();
         vec3.scale(velocity, this.velocity, this.friction);
         this.velocity = velocity;
+
+        function heightAtPos(x, z) {
+            return .3 * (Math.sin((time % 6) / 3 * Math.PI + (x + z)/2) - Math.cos((time % 6) / 3 * Math.PI + (x - z)/2));
+        }
+
+        // Calculate height
+        let x = this.position[0], z = this.position[2];
+        let h = heightAtPos(x, z);
+        this.position[1] = h + .3;
+
+        // Calculate rotation
+        let hX = heightAtPos(x + 1, z);
+        let hZ = heightAtPos(x, z + 1);
+        this.rotation[0] = -Math.asin(h - hX);
+        this.rotation[2] = -Math.asin(h - hZ);
+
+        let rotate = this.rotation[1];
 
         super.draw(stack, time);
 
@@ -45,9 +62,9 @@ class Boat extends Mesh {
         stack.rotate(this.rotation[2], [0, 0, 1]);
 
         // Translate oars into position
-        let x = 0.65;
+        x = 0.65;
         let y = 0.6;
-        let z = 0.14;
+        z = 0.14;
         let rY = rad(90);
 
         // Left oar
