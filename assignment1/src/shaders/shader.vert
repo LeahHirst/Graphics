@@ -1,16 +1,15 @@
-#version 300 es
 
 // Vertex attributes
-layout(location = 0) in vec3 aVertexPosition;
-layout(location = 1) in vec3 aVertexNormal;
-layout(location = 2) in vec2 aTextureCoord;
+attribute vec3 aVertexPosition;
+attribute vec3 aVertexNormal;
+attribute vec2 aTextureCoord;
 
 // Uniforms
 uniform mat4 uNormalMatrix, uModelViewMatrix, uProjectionMatrix, uTranslationMatrix;
 
 // Outputs
-out vec2 vTextureCoord;
-out vec3 vLighting;
+varying vec2 vTextureCoord;
+varying vec3 vLighting;
 
 void main()
 {

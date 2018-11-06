@@ -18,7 +18,7 @@ main();
 function main() {
 
   const canvas = document.getElementById('glCanvas');
-  const gl = canvas.getContext('webgl2');
+  const gl = canvas.getContext('webgl');
 
   let program = new Program(gl, {
     fragment: fragmentShader,

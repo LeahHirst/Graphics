@@ -13,9 +13,6 @@ class Program {
         this.gl = gl;
         this.program = gl.createProgram();
 
-        this.vao = gl.createVertexArray();
-        gl.bindVertexArray(this.vao);
-
         // Load and attach shaders
         let fragmentShader = new Shader(gl, gl.FRAGMENT_SHADER, shaderSource.fragment);
         let vertexShader = new Shader(gl, gl.VERTEX_SHADER, shaderSource.vertex);
