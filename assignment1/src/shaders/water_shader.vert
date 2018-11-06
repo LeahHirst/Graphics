@@ -1,28 +1,27 @@
-#version 300 es
 
 // Vertex attributes
-layout(location = 0) in vec3 aVertexPosition;
-layout(location = 1) in vec3 aVertexNormal;
-layout(location = 2) in vec2 aVertexIndices;
+attribute vec3 aVertexPosition;
+attribute vec3 aVertexNormal;
+attribute vec2 aVertexIndices;
 
 // Uniforms
 uniform mat4 uNormalMatrix, uModelViewMatrix, uProjectionMatrix, uTranslationMatrix;
 uniform float uWaveOffset, uWaveHeight;
 
 // Outputs
-out vec3 vLighting;
-out vec3 vColor;
+varying vec3 vLighting;
+varying vec3 vColor;
 
 // Consts
 const float PI = 3.1415926535897932384626433832795;
-const float TAU = PI * 2.0f; // TAU > PI
+const float TAU = PI * 2.0; // TAU > PI
 
 vec3 calculateNormal(vec3 v0, vec3 v1, vec3 v2) {
 	return normalize(cross(v1 - v0, v2 - v0));
 }
 
 float calculateYPosition(float x, float z) {
-	return uWaveHeight * (sin(uWaveOffset * TAU + (x + z)/2.0f) - cos(uWaveOffset * TAU + (x - z)/2.0f));
+	return uWaveHeight * (sin(uWaveOffset * TAU + (x + z)/2.0) - cos(uWaveOffset * TAU + (x - z)/2.0));
 }
 
 void main()
@@ -36,14 +35,12 @@ void main()
 	// Find the other vertices in this triangle
 	int i = int(aVertexIndices[0]);
 	float dX1, dZ1, dX2, dZ2;
-	switch (i) {
-		case 0: dZ1++; dX2++;        break;
-		case 1: dX2--; dX1--; dZ1++; break;
-		case 2: dZ1--; dX2++; dZ2--; break;
-		case 3: dZ1++; dX2--; dZ2++; break;
-		case 4: dX2++; dX1++; dZ1--; break;
-		case 5: dX2--; dZ1--;        break;
-	}
+	if (i == 0) { dZ1++; dX2++; }
+	if (i == 1) { dX2--; dX1--; dZ1++; }
+	if (i == 2) { dZ1--; dX2++; dZ2--; }
+	if (i == 3) { dZ1++; dX2--; dZ2++; }
+	if (i == 4) { dX2++; dX1++; dZ1--; }
+	if (i == 5) { dX2--; dZ1--; }
 
 	vec3 v1 = vec3(x + dX1, calculateYPosition(x + dX1, z + dZ1), z + dZ1);
 	vec3 v2 = vec3(x + dX2, calculateYPosition(x + dX2, z + dZ2), z + dZ2);
