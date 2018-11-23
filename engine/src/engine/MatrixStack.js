@@ -7,7 +7,7 @@ export default class MatrixStack {
      */
     constructor() {
         this.stack = [];
-        this.   pop();
+        this.pop();
     }
 
     pop() {

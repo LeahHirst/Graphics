@@ -1,6 +1,6 @@
-import Shader from './Shader';
+import Shader from './shader/Shader';
 import { mat4 } from 'gl-matrix';
-import { rad } from './utils';
+import { rad } from './util/MathUtils';
 
 export default class Program {
 
@@ -12,9 +12,6 @@ export default class Program {
     constructor(gl, shaderSource) {
         this.gl = gl;
         this.program = gl.createProgram();
-
-        this.vao = gl.createVertexArray();
-        gl.bindVertexArray(this.vao);
 
         // Load and attach shaders
         let fragmentShader = new Shader(gl, gl.FRAGMENT_SHADER, shaderSource.fragment);
@@ -51,12 +48,9 @@ export default class Program {
         this.gl.useProgram(this.program);
 
         let aspectRatio = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
-        let projection = mat4.create();
-        mat4.perspective(projection, rad(30), aspectRatio, 0.1, 1000);
-
+        
         let model = mat4.create();
-
-        this.gl.uniformMatrix4fv(this.uniform('uProjectionMatrix'), false, projection);
+        this.gl.uniformMatrix4fv(this.uniform('uProjectionMatrix'), false, camera.getProjection(aspectRatio));
         this.gl.uniformMatrix4fv(this.uniform('uNormalMatrix'), false, model);
         this.gl.uniformMatrix4fv(this.uniform('uModelViewMatrix'), false, camera.getView());
         

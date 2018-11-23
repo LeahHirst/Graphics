@@ -1,6 +1,6 @@
 import { mat4, vec3, mat3 } from 'gl-matrix';
-import Camera from './Camera';
-import { rad } from './utils';
+import Camera from './camera/Camera';
+import { rad } from './util/MathUtils';
 import MatrixStack from './MatrixStack';
 
 export default class Scene {
@@ -23,9 +23,13 @@ export default class Scene {
         this.objects.push(object);
     }
 
+    setCamera(camera) {
+        this.camera = camera;
+    }
+
     draw(time) {
         // Clear display
-        this.gl.clearColor(0.152941176470588, 0.454901960784314, 0.411764705882353, 1.0);
+        this.gl.clearColor(0, 0, 0, 1.0);
         this.gl.clearDepth(1.0);
 
         // Create a matrix stack
@@ -44,6 +48,10 @@ export default class Scene {
         this.objects.forEach(object => {
             object.draw(stack, time);
         });
+    }
+
+    addPredrawMap(program) {
+        
     }
 
 }
