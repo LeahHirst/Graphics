@@ -14,9 +14,6 @@ import KeyboardController from './engine/controls/KeyboardController';
 import fragShader from './engine/shaders/bp_shader.frag';
 import vertShader from './engine/shaders/bp_shader.vert';
 
-import texture from '../../assignment1/src/meshes/textures/lighthouse.png';
-import lighthouseGeometry from './Lighthouse.obj';
-import TexturedMesh from './engine/mesh/TexturedMesh';
 import Program from './engine/Program';
 import VRController from './engine/controls/VRController';
 import Shader from './engine/shader/Shader';
@@ -29,6 +26,7 @@ import Camera from './engine/camera/Camera';
 import Mesh from './engine/mesh/Mesh';
 import MoonSurface from './app/objects/MoonSurface';
 
+// Moon surface
 import moonFrag from './app/shaders/moon_shader.frag';
 import moonVert from './app/shaders/moon_shader.vert';
 import moonHeight from './app/images/test2.png';
@@ -43,7 +41,6 @@ app.setScene(scene);
 
 const camera = new FreeCamera();
 scene.setCamera(camera);
-
 
 let program = new Program(app.gl, { fragment: fragShader, vertex: vertShader });
 let moonProgram = new Program(app.gl, { fragment: moonFrag, vertex: moonVert });
@@ -69,20 +66,33 @@ camera.position[1] = 5;
 // Register controls
 let moveSpeed = 0.5;
 app.addAction('moveForward', () => {
-    let rX = camera.rotation[1];
-    let rY = camera.rotation[0];
-    let dY = moveSpeed * Math.sin(rY);
+    let rX = camera.rotation[1]; // Rotation in X (left/right)
+    let rY = camera.rotation[0]; // Rotation in Y (up/down)
+
+    let dY = moveSpeed * Math.sin(rY); // Delta Y
+    let H  = moveSpeed * Math.cos(rY); // Movement distance in XZ plane
+
+    let dX = H * Math.sin(-rX); // Delta X
+    let dZ = H * Math.cos(rX); // Delta Z
+
+    // Update camera position
     camera.position[1] += dY;
-    camera.position[2] += (moveSpeed - dY) * Math.cos(rX);
-    camera.position[0] -= (moveSpeed - dY) * Math.sin(rX);
+    camera.position[0] += dX;
+    camera.position[2] += dZ;
 }, 1);
 app.addAction('moveBackwards', () => {
-    let rX = camera.rotation[1];
-    let rY = camera.rotation[0];
-    let dY = moveSpeed * Math.sin(rY);
-    camera.position[1] += dY;
-    camera.position[2] -= (moveSpeed - dY/2) * Math.cos(rX);
-    camera.position[0] += (moveSpeed - dY/2) * Math.sin(rX);
+    let rX = camera.rotation[1]; // Rotation in X (left/right)
+    let rY = camera.rotation[0]; // Rotation in Y (up/down)
+
+    let dY = moveSpeed * Math.sin(rY); // Delta Y
+    let H  = moveSpeed * Math.cos(rY); // Movement distance in XZ plane
+
+    let dX = H * Math.sin(-rX); // Delta X
+    let dZ = H * Math.cos(rX); // Delta Z
+
+    camera.position[1] -= dY;
+    camera.position[0] -= dX;
+    camera.position[2] -= dZ;
 }, 1);
 app.addAction('moveLeft', () => {
     let rX = camera.rotation[1];
