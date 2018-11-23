@@ -10,4 +10,3 @@ void main()
 
 	gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
 }
-
