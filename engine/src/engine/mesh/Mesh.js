@@ -1,5 +1,5 @@
 import { initBuffer } from '../util/WebGLUtils';
-import { flatten } from '../util/Utils';
+import { flatten } from '../util';
 import { mat4, vec3 } from 'gl-matrix';
 import Texture from '../Texture';
 

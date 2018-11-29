@@ -12,6 +12,7 @@ uniform sampler2D uNormalMap;
 varying vec3 vVertPos;
 varying vec3 vTransformedNormal;
 varying vec2 vNormalCoord;
+varying vec2 vTextureCoord;
 
 // Options
 const float maxHeight = 5.0;
@@ -29,6 +30,7 @@ void main()
 
     vec4 vertPos4 = uModelViewMatrix * position_h;
     vNormalCoord = aSmallNormalCoord;
+    vTextureCoord = aNormalCoord;
     vVertPos = vec3(vertPos4) / vertPos4.w;
 	vTransformedNormal = vec3(uNormalMatrix * uTranslationMatrix * normal);
 }

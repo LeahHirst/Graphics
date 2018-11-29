@@ -24,7 +24,11 @@ export default class Controller {
     update(app) {
         Object.keys(this.events).forEach(e => {
             if (e != undefined && this.getState(e)) {
-                app.fireAction(this.events[e]);
+                if (typeof(this.events[e]) == 'function') {
+                    this.events[e]();
+                } else {
+                    app.fireAction(this.events[e]);
+                }
             }
         });
     }

@@ -19,6 +19,17 @@ export default class WebGLApp {
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        window.addEventListener('resize', () => {
+            const w = window.innerWidth, h = window.innerHeight;
+            canvas.width = w;
+            canvas.height = h;
+            if (this.scene != undefined) {
+                this.scene.camera.aspectRatio = w / h;
+            }
+            if (this.gl != undefined) {
+                this.gl.viewport(0, 0, w, h);
+            }
+        })
 
         /**
          * @type {Controller} controllers - the control schemes
