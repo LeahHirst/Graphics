@@ -2,8 +2,10 @@ precision mediump float;
 varying vec3 vVertPos;
 varying vec3 vTransformedNormal;
 varying vec2 vNormalCoord;
+varying vec2 vTextureCoord;
 
 uniform sampler2D uRockNormalMap;
+uniform sampler2D uTexture;
 
 // Constants
 const vec3 materialColor = vec3(0.6, 0.6, 0.6);
@@ -18,6 +20,7 @@ const float shininess = 20.0;
 void main()
 {
     highp vec4 normalMap = texture2D(uRockNormalMap, vNormalCoord);
+    highp vec4 textureMap = texture2D(uTexture, vTextureCoord);
 
     vec3 normalMapTrans = normalMap.rgb * 2.0 - 1.0;
 
@@ -41,9 +44,9 @@ void main()
         
     }
 
-    vec3 color = materialColor * ambientColor +
-                 materialColor * diffuseColor * lambertian * lightColor * lightPower +
-                 materialColor * specColor * specular * lightColor * lightPower;
+    vec3 color = textureMap.rgb * ambientColor +
+                 textureMap.rgb * diffuseColor * lambertian * lightColor * lightPower +
+                 textureMap.rgb * specColor * specular * lightColor * lightPower;
 
     gl_FragColor = vec4(color, 1.0);
 }

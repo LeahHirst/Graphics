@@ -6,10 +6,12 @@ export default class FreeCamera {
     /**
      * Construct a new instance of Camera
      */
-    constructor(nearDepth = 0.1, farDepth = 1000, fieldOfView = rad(30)) {
+    constructor(nearDepth = 0.1, farDepth = 1000, fieldOfView = rad(30), moveSpeed = 0.5, panSpeed = rad(2)) {
         this.nearDepth = nearDepth;
         this.farDepth = farDepth;
         this.fieldOfView = fieldOfView;
+        this.moveSpeed = moveSpeed;
+        this.panSpeed = panSpeed;
 
         // The position of the camera
         this.position = vec3.fromValues(5, 3, 5);
@@ -46,6 +48,65 @@ export default class FreeCamera {
         let projection = mat4.create();
         mat4.perspective(projection, this.fieldOfView, aspectRatio, this.nearDepth, this.farDepth);
         return projection;
+    }
+
+    moveForward() {
+        let rX = this.rotation.x; // Rotation in X (left/right)
+        let rY = this.rotation.y; // Rotation in Y (up/down)
+    
+        let dY = this.moveSpeed * Math.sin(rX); // Delta Y
+        let H  = this.moveSpeed * Math.cos(rX); // Movement distance in XZ plane
+    
+        let dX = H * Math.sin(-rY); // Delta X
+        let dZ = H * Math.cos(rY); // Delta Z
+    
+        // Update camera position
+        this.position.y += dY;
+        this.position.x += dX;
+        this.position.z += dZ;
+    }
+
+    moveBackwards() {
+        let rX = this.rotation.x; // Rotation in X (left/right)
+        let rY = this.rotation.y; // Rotation in Y (up/down)
+
+        let dY = this.moveSpeed * Math.sin(rX); // Delta Y
+        let H  = this.moveSpeed * Math.cos(rX); // Movement distance in XZ plane
+
+        let dX = H * Math.sin(-rY); // Delta X
+        let dZ = H * Math.cos(rY); // Delta Z
+
+        this.position[1] -= dY;
+        this.position[0] -= dX;
+        this.position[2] -= dZ;
+    }
+
+    moveLeft() {
+        let rY = this.rotation.y;
+        this.position.z += this.moveSpeed * Math.cos(rY - Math.PI/2);
+        this.position.x -= this.moveSpeed * Math.sin(rY - Math.PI/2);
+    }
+
+    moveRight() {
+        let rY = this.rotation.y;
+        this.position.z += this.moveSpeed * Math.cos(rY + Math.PI/2);
+        this.position.x -= this.moveSpeed *  Math.sin(rY + Math.PI/2);
+    }
+
+    panUp() {
+        this.rotation.x -= this.panSpeed;
+    }
+
+    panDown() {
+        this.rotation.x += this.panSpeed;
+    }
+
+    panLeft() {
+        this.rotation.y -= this.panSpeed;
+    }
+
+    panRight() {
+        this.rotation.y += this.panSpeed;
     }
 
 }

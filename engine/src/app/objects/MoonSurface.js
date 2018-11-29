@@ -1,10 +1,26 @@
 import Mesh from "../../engine/mesh/Mesh";
+import { Program } from "../../engine";
+
+import heightMap from '../images/test3.png';
+import normalMap from '../images/test2norm.png';
+import smallNormal from '../images/download.jpeg';
+import texture from '../images/moon_surface.png';
+
+// Shaders
+import frag from '../shaders/moon_shader.frag';
+import vert from '../shaders/moon_shader.vert';
 
 export default class MoonSurface extends Mesh {
 
-    constructor(gl, program) {
+    constructor(gl) {
+        let program = new Program(gl, { fragment: frag, vertex: vert });
         let geometry = MoonSurface.generateModel();
         super(gl, program, geometry);
+
+        this.enableSampler('uHeightMap', heightMap);
+        this.enableSampler('uNormalMap', normalMap);
+        this.enableSampler('uRockNormalMap', smallNormal);
+        this.enableSampler('uTexture', texture);
     }
 
     static getVert(x, z) {

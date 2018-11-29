@@ -12,7 +12,7 @@ const float lightPower = 2.0;
 const vec3 lightColor = vec3(1.0, 1.0, 1.0);
 const vec3 ambientColor = vec3(0.1, 0.1, 0.1);
 const vec3 diffuseColor = vec3(0.5, 0.5, 0.5);
-const vec3 specColor = vec3(0.8, 0.8, 0.8);
+const vec3 specColor = vec3(0.6, 0.6, 0.6);
 const float shininess = 12.0;
 
 void main()
@@ -43,7 +43,7 @@ void main()
 
     vec3 color = texelColor.rgb * ambientColor +
                  texelColor.rgb * diffuseColor * lambertian * lightColor * lightPower +
-                 texelColor.rgb * specColor * specular * lightColor * lightPower;
+                 specColor * specular * lightColor * lightPower;
 
     gl_FragColor = vec4(color, 1.0);
 }
