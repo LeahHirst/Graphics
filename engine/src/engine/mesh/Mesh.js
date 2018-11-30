@@ -40,6 +40,9 @@ export default class Mesh {
         this.samplers = [];
 
         this.buffersInitiated = false;
+
+        this.lightingMode = 0;
+        this.normalMode = 0;
     }
 
     /**
@@ -83,6 +86,10 @@ export default class Mesh {
         // Apply the transformation matrix
         const translateMat = this.getTranslationMatrix(this._stack);
         this.gl.uniformMatrix4fv(this.program.uniform('uTranslationMatrix'), false, translateMat);
+
+        // TODO: Code only used for demo; remove
+        this.gl.uniform1i(this.program.uniform('uLightMode'), this.lightingMode);
+        this.gl.uniform1i(this.program.uniform('uNormMode'), this.normalMode);
     }
 
     /**

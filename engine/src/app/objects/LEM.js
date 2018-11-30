@@ -13,8 +13,8 @@ export default class LEM extends Mesh {
         // Enable samplers
         this.enableSampler('uSampler', texture);
         this.enableSampler('uNormalMap', normalMap);
-
-        this.thrust = 0;
     }
+
+    
 
 }

@@ -18,6 +18,18 @@
       width: 100%;
       height: 100%;
     }
+
+    .overlay {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background-color: #fff;
+      padding: 10px;
+    }
+
+    h2 {
+      margin: 0;
+    }
   </style>
 </head>
 
@@ -25,6 +37,22 @@
   <canvas id="canvas">
     Your browser doesn't support canvas
   </canvas>
+
+  <div class="overlay">
+    <h2>Controls</h2>
+    <p>W - Move camera foreward</p>
+    <p>A - Move camera left</p>
+    <p>S - Move camera backwards</p>
+    <p>D - Move camera right</p>
+    <p>Arrow Up - Pan camera up</p>
+    <p>Arrow Left - Pan camera left</p>
+    <p>Arrow Down - Pan camera down</p>
+    <p>Arrow Right - Pan camera right</p>
+    <p>O - Rotate lander left</p>
+    <p>P - Rotate lander right</p>
+    <p>R - Change lighting mode</p>
+    <p>T - Change normal mode</p>
+  </div>
 </body>
 
 </html>

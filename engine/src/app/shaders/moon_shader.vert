@@ -7,6 +7,7 @@ attribute vec2 aSmallNormalCoord; // Coordinates for small normal map (rocks etc
 uniform mat4 uNormalMatrix, uModelViewMatrix, uProjectionMatrix, uTranslationMatrix;
 uniform sampler2D uHeightMap;
 uniform sampler2D uNormalMap;
+uniform int uNormMode;
 
 // Outputs
 varying vec3 vVertPos;
@@ -32,5 +33,7 @@ void main()
     vNormalCoord = aSmallNormalCoord;
     vTextureCoord = aNormalCoord;
     vVertPos = vec3(vertPos4) / vertPos4.w;
-	vTransformedNormal = vec3(uNormalMatrix * uTranslationMatrix * normal);
+    vTransformedNormal = vec3(uNormalMatrix * uTranslationMatrix * normal);
+    
+    if (uNormMode == 1) vTransformedNormal = vec3(0, 1, 0);
 }
