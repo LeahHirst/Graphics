@@ -1,5 +1,5 @@
 import Shader from './shader/Shader';
-import { mat4 } from 'gl-matrix';
+import { mat3, mat4 } from 'gl-matrix';
 import { rad } from './util/MathUtils';
 
 export default class Program {
@@ -49,10 +49,14 @@ export default class Program {
 
         let aspectRatio = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
         
-        let model = mat4.create();
+        let modelViewMatrix = camera.getView();
+        let normalMatrix = mat4.create();
+        // let normalMatrix = mat3.create();
+        // mat3.invert(normalMatrix, modelViewMatrix);
+        // mat3.transpose(normalMatrix, normalMatrix);
         this.gl.uniformMatrix4fv(this.uniform('uProjectionMatrix'), false, camera.getProjection(aspectRatio));
-        this.gl.uniformMatrix4fv(this.uniform('uNormalMatrix'), false, model);
-        this.gl.uniformMatrix4fv(this.uniform('uModelViewMatrix'), false, camera.getView());
+        this.gl.uniformMatrix4fv(this.uniform('uNormalMatrix'), false, normalMatrix);
+        this.gl.uniformMatrix4fv(this.uniform('uModelViewMatrix'), false, modelViewMatrix);
         
         this.gl.useProgram(null);
     }
