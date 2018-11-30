@@ -6,6 +6,9 @@ varying vec3 vTransformedNormal;
 uniform sampler2D uSampler;
 uniform sampler2D uNormalMap;
 
+uniform int uLightMode;
+uniform int uNormMode;
+
 // Constants
 const vec3 lightPosition = vec3(0.0,10.0,5.0);
 const float lightPower = 2.0;
@@ -24,6 +27,8 @@ void main()
 
     vec3 N = normalize(vTransformedNormal * normalMapTrans); // Normal
     vec3 L = lightPosition - vVertPos; // Light direction
+
+    if (uNormMode > 0) N = normalize(vTransformedNormal);
     
     // Normalize light direction
     L = normalize(L);
@@ -40,6 +45,9 @@ void main()
         specular = pow(S, shininess);
         
     }
+
+    if (uLightMode == 1) { lambertian = 0.0; }
+    if (uLightMode == 1 || uLightMode == 2) { specular = 0.0; }
 
     vec3 color = texelColor.rgb * ambientColor +
                  texelColor.rgb * diffuseColor * lambertian * lightColor * lightPower +
