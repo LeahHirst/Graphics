@@ -41,9 +41,10 @@ lem.scale = vec3.fromValues(0.4, 0.4, 0.4);
 let moonSurface = new MoonSurface(app.gl);
 moonSurface.addTo(scene);
 
-camera.position.y = 10;
-
-
+camera.position.x = -3;
+camera.position.y = -3.5;
+camera.position.z = -8;
+camera.rotation.y = -.5;
 
 let keyboardController = new KeyboardController();
 keyboardController.on('KeyW', () => { camera.moveForward(); });
@@ -56,10 +57,4 @@ keyboardController.on('ArrowDown', () => { camera.panDown(); });
 keyboardController.on('ArrowLeft', () => { camera.panLeft(); });
 keyboardController.on('ArrowRight', () => { camera.panRight() });
 
-let vrController = new VRController();
-vrController.onStateChange(e => {
-    
-})
-
 app.registerController(keyboardController);
-app.registerController(vrController);

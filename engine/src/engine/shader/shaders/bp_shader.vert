@@ -1,3 +1,4 @@
+
 // Vertex attributes
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
